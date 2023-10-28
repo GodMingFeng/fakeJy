@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '1.5.22.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven { name "Alibaba"; url "https://maven.aliyun.com/repository/public" }
+        maven { name "Bstek"; url "https://nexus.bsdn.org/content/groups/public/" }
+        mavenCentral()
+    }
+
+    buildscript {
+        repositories {
+            maven { name "Alibaba"; url 'https://maven.aliyun.com/repository/public' }
+            maven { name "Bstek"; url 'https://nexus.bsdn.org/content/groups/public/' }
+            maven { name "M2"; url 'https://plugins.gradle.org/m2/' }
+        }
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+ext {
+    springBootVersion = '1.5.22.RELEASE'
+    lombokVersion = '1.18.20'
+    mybatisVersion = '3.5.13'
+    tkMapperVersion = '4.1.5'
+    mybatisSpringVersion = '2.0.7'
+    springJdbcVersion = '5.0.20.RELEASE'
+    connectorMysqlVersion = '8.0.33'
+    junitVersion = '4.13.2'
+    fastjsonVersion = '2.0.40'
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "junit:junit:$junitVersion"
+
+
+    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.mybatis:mybatis-spring:$mybatisSpringVersion"
+    compile "org.mybatis:mybatis:$mybatisVersion"
+    compile "tk.mybatis:mapper:$tkMapperVersion"
+    compile "org.springframework:spring-jdbc:$springJdbcVersion"
+    compile "mysql:mysql-connector-java:$connectorMysqlVersion"
+    compile "com.alibaba:fastjson:$fastjsonVersion"
+}
+
+
