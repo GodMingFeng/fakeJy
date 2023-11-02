@@ -43,6 +43,7 @@ ext {
     connectorMysqlVersion = '8.0.33'
     junitVersion = '4.13.2'
     fastjsonVersion = '2.0.40'
+    httpClientVersion = '4.5.13'
 }
 
 dependencies {
@@ -62,6 +63,7 @@ dependencies {
     compile "org.springframework:spring-jdbc:$springJdbcVersion"
     compile "mysql:mysql-connector-java:$connectorMysqlVersion"
     compile "com.alibaba:fastjson:$fastjsonVersion"
+    compile "org.apache.httpcomponents:httpclient:$httpClientVersion"
 }
 
 
