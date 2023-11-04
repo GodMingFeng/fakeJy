@@ -69,6 +69,8 @@ dependencies {
     compile "com.github.pagehelper:pagehelper-spring-boot-starter:$pageHelperVersion"
     compile "com.google.guava:guava:$guavaVersion"
     compile 'org.slf4j:slf4j-api:2.0.9'
+    compile 'redis.clients:jedis:2.7.2'
+
 }
 
 

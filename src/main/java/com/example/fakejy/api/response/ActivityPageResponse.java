@@ -1,5 +1,6 @@
 package com.example.fakejy.api.response;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -115,4 +116,19 @@ public class ActivityPageResponse implements Serializable {
      * 修改时间
      */
     private Date gmtModified;
+
+    /**
+     * 商户信息
+     */
+    private String storeInfo;
+
+    /**
+     * 商户名称
+     */
+    private String storeName;
+
+    /**
+     * 商户信息
+     */
+    private JSONObject storeInfoObj;
 }

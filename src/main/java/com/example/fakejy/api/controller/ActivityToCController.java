@@ -1,22 +1,23 @@
 package com.example.fakejy.api.controller;
 
+import com.example.fakejy.api.convert.ActivityConverter;
 import com.example.fakejy.api.request.ActivityDetailRequest;
 import com.example.fakejy.api.request.ActivityPageRequest;
 import com.example.fakejy.api.response.ActivityDetailResponse;
 import com.example.fakejy.api.response.ActivityPageResponse;
 import com.example.fakejy.common.Page;
 import com.example.fakejy.common.Response;
-import com.example.fakejy.common.constants.AuthConstants;
 import com.example.fakejy.common.utils.BeanCopiers;
 import com.example.fakejy.common.utils.MessageUtils;
 import com.example.fakejy.core.service.activity.ActivityService;
+import com.example.fakejy.core.service.activity.RankService;
 import com.example.fakejy.core.service.activity.ao.QueryActivityAO;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/fake_jy")
@@ -25,18 +26,24 @@ public class ActivityToCController {
     @Resource
     private ActivityService activityService;
 
+    @Resource
+    private RankService rankService;
+
     @ResponseBody
     @RequestMapping(path = "/getActivityDetail", method = RequestMethod.POST)
     public Response<ActivityDetailResponse> getActivityDetail(@RequestBody ActivityDetailRequest activityDetailRequest) {
         var result = activityService.queryActivityById(activityDetailRequest.getId());
-        return Response.<ActivityDetailResponse>success().result(BeanCopiers.copy(result, new ActivityDetailResponse()));
+        if (result != null) {
+            rankService.activityClick(activityDetailRequest.getId());
+        }
+        return Response.<ActivityDetailResponse>success().result(ActivityConverter.convertDetail(result));
     }
 
     @ResponseBody
-    @RequestMapping(path = "/queryActivity", method = RequestMethod.POST)
+    @RequestMapping(path = "/getActivities", method = RequestMethod.POST)
     public Response<Page<ActivityPageResponse>> queryActivity(@RequestBody ActivityPageRequest activityPageRequest) {
         var result = activityService.queryActivities(BeanCopiers.copy(activityPageRequest, QueryActivityAO.class));
-        return Response.<Page<ActivityPageResponse>>success().result(BeanCopiers.copyPage(result, ActivityPageResponse.class));
+        return Response.<Page<ActivityPageResponse>>success().result(BeanCopiers.copyPage(result, ActivityConverter::convertPage));
     }
 
     @ResponseBody
@@ -52,27 +59,10 @@ public class ActivityToCController {
         return MessageUtils.WX.encryptMsg("success", timestamp, nonce);
     }
 
-    private boolean checkSignature(String signature, String timestamp, String nonce) {
-        var token = AuthConstants.SEND_MESSAGE_TOKEN; // Replace TOKEN with your token
-        var tmpArr = new String[]{token, timestamp, nonce};
-        Arrays.sort(tmpArr);
-        var tmpStr = String.join("", tmpArr);
-        tmpStr = sha1(tmpStr);
-        return tmpStr.equals(signature);
-    }
-
-    private String sha1(String input) {
-        try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(input.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : digest) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
+    @ResponseBody
+    @RequestMapping(path = "/getRankingList", method = RequestMethod.POST)
+    public Response<List<ActivityPageResponse>> getRankingList() {
+        var result = activityService.rankActivities();
+        return Response.<List<ActivityPageResponse>>success().result(BeanCopiers.copyList(result, ActivityConverter::convertPage));
     }
 }

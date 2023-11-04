@@ -115,4 +115,14 @@ public class ActivityBO implements Serializable {
      * 修改时间
      */
     private Date gmtModified;
+
+    /**
+     * 商户信息
+     */
+    private String storeInfo;
+
+    /**
+     * 商户名称
+     */
+    private String storeName;
 }
