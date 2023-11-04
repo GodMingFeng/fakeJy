@@ -16,6 +16,9 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -49,6 +52,8 @@ public class ActivityServiceImpl implements ActivityService {
         example.createCriteria()
                 .andIn("id", idList);
         var activityList = activityMapper.selectByExample(example);
-        return BeanCopiers.copyList(activityList, ActivityBO.class);
+        var map = activityList.stream().collect(Collectors.toMap(Activity::getId, Function.identity()));
+        var result = idList.stream().map(map::get).filter(Objects::nonNull).collect(Collectors.toList());
+        return BeanCopiers.copyList(result, ActivityBO.class);
     }
 }
