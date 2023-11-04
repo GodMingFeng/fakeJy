@@ -39,8 +39,14 @@ public class ActivityToCController {
 
     @ResponseBody
     @RequestMapping(path = "/sendMessage", method = RequestMethod.GET, consumes = {MediaType.TEXT_XML_VALUE}, produces = {MediaType.TEXT_XML_VALUE})
-    public String sendMessage(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce, @RequestParam String echostr) {
+    public String sendMessageGet(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce, @RequestParam String echostr) {
         return echostr == null ? "success" : echostr;
+    }
+
+    @ResponseBody
+    @RequestMapping(path = "/sendMessage", method = RequestMethod.POST, consumes = {MediaType.TEXT_XML_VALUE}, produces = {MediaType.TEXT_XML_VALUE})
+    public String sendMessagePost() {
+        return "success";
     }
 
     private boolean checkSignature(String signature, String timestamp, String nonce) {
