@@ -9,4 +9,6 @@ public class AuthConstants {
     public static final String JS_CODE_2_SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
 
     public static final String SEND_MESSAGE_TOKEN = "InfoGapVerifyToken";
+
+    public static final String AES_TOKEN  = "xSynAMiSgDrSnUJVMHJ57ySkjR1AFGYQNKfhxehQaWR";
 }
