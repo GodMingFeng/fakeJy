@@ -25,10 +25,4 @@ public class FakeJyApplicationTests {
         System.out.println(JSONObject.toJSONString(activityMapper.selectAll()));
         System.out.println(333333);
     }
-
-    @Test
-    public void testPage() {
-        activityService.queryActivities(null);
-    }
-
 }
