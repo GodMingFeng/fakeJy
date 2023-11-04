@@ -1,6 +1,7 @@
 package com.example.fakejy;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.fakejy.core.service.activity.ActivityService;
 import com.example.fakejy.mapper.repository.ActivityMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +17,18 @@ public class FakeJyApplicationTests {
     @Resource
     private ActivityMapper activityMapper;
 
+    @Resource
+    private ActivityService activityService;
+
     @Test
     public void contextLoads() {
         System.out.println(JSONObject.toJSONString(activityMapper.selectAll()));
         System.out.println(333333);
+    }
+
+    @Test
+    public void testPage() {
+        activityService.queryActivities(null);
     }
 
 }

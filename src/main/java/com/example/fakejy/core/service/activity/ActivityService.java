@@ -1,5 +1,7 @@
 package com.example.fakejy.core.service.activity;
 
+import com.example.fakejy.common.Page;
+import com.example.fakejy.core.service.activity.ao.QueryActivityAO;
 import com.example.fakejy.core.service.activity.bo.ActivityBO;
 
 public interface ActivityService {
@@ -11,4 +13,12 @@ public interface ActivityService {
      * @return 活动
      */
     ActivityBO queryActivityById(Long id);
+
+
+    /**
+     * 查询活动列表
+     *
+     * @return 活动列表
+     */
+    Page<ActivityBO> queryActivities(QueryActivityAO queryActivityAO);
 }
