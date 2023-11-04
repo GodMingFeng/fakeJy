@@ -48,7 +48,7 @@ public class ActivityToCController {
     @ResponseBody
     @SneakyThrows
     @RequestMapping(path = "/sendMessage", method = RequestMethod.POST, consumes = {MediaType.TEXT_XML_VALUE}, produces = {MediaType.TEXT_XML_VALUE})
-    public String sendMessagePost(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce, @RequestParam String echostr) {
+    public String sendMessagePost(@RequestParam String timestamp, @RequestParam String nonce) {
         return MessageUtils.WX.encryptMsg("success", timestamp, nonce);
     }
 
