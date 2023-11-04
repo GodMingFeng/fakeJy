@@ -9,6 +9,7 @@ import com.example.fakejy.common.Response;
 import com.example.fakejy.common.utils.BeanCopiers;
 import com.example.fakejy.core.service.activity.ActivityService;
 import com.example.fakejy.core.service.activity.ao.QueryActivityAO;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,5 +33,11 @@ public class ActivityToCController {
     public Response<Page<ActivityPageResponse>> queryActivity(@RequestBody ActivityPageRequest activityPageRequest) {
         var result = activityService.queryActivities(BeanCopiers.copy(activityPageRequest, QueryActivityAO.class));
         return Response.<Page<ActivityPageResponse>>success().result(BeanCopiers.copyPage(result, ActivityPageResponse.class));
+    }
+
+    @ResponseBody
+    @RequestMapping(path = "/sendMessage", method = RequestMethod.POST, consumes = {MediaType.TEXT_XML_VALUE}, produces = {MediaType.TEXT_XML_VALUE})
+    public String sendMessage() {
+        return "success";
     }
 }
