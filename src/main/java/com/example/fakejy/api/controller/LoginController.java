@@ -29,9 +29,9 @@ public class LoginController {
         ao.setSecret(AuthConstants.APP_SECRET);
         ao.setAppid(AuthConstants.APP_ID);
         ao.setGrantType("authorization_code");
-        var loginBo = loginService.login(ao);
+        var loginToken = loginService.login(ao);
         var response = new JsCode2sessionResponse();
-        response.setOpenid(loginBo.getOpenid());
+        response.setLoginToken(loginToken);
         return Response.<JsCode2sessionResponse>success().result(response);
     }
 }

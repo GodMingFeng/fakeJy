@@ -1,7 +1,7 @@
 package com.example.fakejy.core.service.login;
 
 import com.example.fakejy.core.service.login.ao.JsCode2sessionAO;
-import com.example.fakejy.core.service.login.bo.JsCode2sessionBO;
+import com.example.fakejy.core.service.login.bo.UserBO;
 
 public interface LoginService {
 
@@ -11,5 +11,13 @@ public interface LoginService {
      * @param request 请求
      * @return 结果
      */
-    JsCode2sessionBO login(JsCode2sessionAO request);
+    String login(JsCode2sessionAO request);
+
+    /**
+     * openId
+     *
+     * @param openId openId
+     * @return 结果
+     */
+    UserBO getUserByOpenId(String openId);
 }

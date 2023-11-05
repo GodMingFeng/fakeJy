@@ -1,12 +1,14 @@
 package com.example.fakejy.core.service.activity.impl;
 
 import com.example.fakejy.common.Page;
+import com.example.fakejy.common.enums.FavoritesType;
 import com.example.fakejy.common.utils.BeanCopiers;
 import com.example.fakejy.common.utils.PageUtils;
 import com.example.fakejy.core.service.activity.ActivityService;
 import com.example.fakejy.core.service.activity.RankService;
 import com.example.fakejy.core.service.activity.ao.QueryActivityAO;
 import com.example.fakejy.core.service.activity.bo.ActivityBO;
+import com.example.fakejy.core.service.favorites.FavoritesService;
 import com.example.fakejy.mapper.domain.Activity;
 import com.example.fakejy.mapper.repository.ActivityMapper;
 import com.google.common.collect.Lists;
@@ -29,6 +31,9 @@ public class ActivityServiceImpl implements ActivityService {
     @Resource
     private RankService rankService;
 
+    @Resource
+    private FavoritesService favoritesService;
+
     @Override
     public ActivityBO queryActivityById(Long id) {
         var activity = activityMapper.selectByPrimaryKey(id);
@@ -45,6 +50,18 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<ActivityBO> rankActivities() {
         var idList = rankService.getTopActivities();
+        return getActivitiesListByIdListOrder(idList);
+    }
+
+    @Override
+    public Page<ActivityBO> favoritesActivities(String openId, Integer page, Integer pageSize) {
+        var idPage = favoritesService.getFavoritesItems(openId, FavoritesType.ACTIVITIES, page, pageSize);
+        var activitiesList = getActivitiesListByIdListOrder(idPage.getList());
+        return new Page<>(idPage.getTotal(), activitiesList);
+    }
+
+    @Override
+    public List<ActivityBO> getActivitiesListByIdListOrder(List<Long> idList) {
         if (CollectionUtils.isEmpty(idList)) {
             return Lists.newArrayList();
         }

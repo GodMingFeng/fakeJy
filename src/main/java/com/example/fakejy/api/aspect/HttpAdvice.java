@@ -1,17 +1,19 @@
-package com.example.fakejy.aspect;
+package com.example.fakejy.api.aspect;
 
 import com.example.fakejy.common.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Slf4j
 @ControllerAdvice
 public class HttpAdvice {
 
+    @ResponseBody
     @ExceptionHandler(Throwable.class)
-    public Response<String> handleException(Throwable ex) {
-        log.error("[http请求异常][e={}]", ex.getMessage());
+    public Response<Object> handleException(Throwable e) {
+        log.error("[http请求异常][e={}]", e.getMessage(), e);
         return Response.error();
     }
 }

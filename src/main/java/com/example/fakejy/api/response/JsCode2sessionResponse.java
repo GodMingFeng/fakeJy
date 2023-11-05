@@ -9,5 +9,5 @@ public class JsCode2sessionResponse implements Serializable {
 
     private static final long serialVersionUID = 4350528887914083862L;
 
-    private String openid;
+    private String loginToken;
 }

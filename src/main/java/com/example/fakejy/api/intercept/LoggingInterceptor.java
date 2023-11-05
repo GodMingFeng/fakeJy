@@ -1,4 +1,4 @@
-package com.example.fakejy.intercept;
+package com.example.fakejy.api.intercept;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;

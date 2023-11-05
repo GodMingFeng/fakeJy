@@ -7,7 +7,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Map;
 
@@ -41,5 +44,12 @@ public class HttpUtils {
         var result = EntityUtils.toString(response.getEntity());
         System.out.println("response: " + result);
         return result;
+    }
+
+    /**
+     * 获取http request
+     */
+    public static HttpServletRequest getHttpRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 }

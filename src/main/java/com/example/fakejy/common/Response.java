@@ -1,5 +1,6 @@
 package com.example.fakejy.common;
 
+import com.example.fakejy.common.constants.Errors;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,8 +31,17 @@ public class Response<T> implements Serializable {
      * 失败
      */
     public static <T> Response<T> error() {
+        return error(Errors.SYSTEM_ERROR);
+    }
+
+    /**
+     * 失败
+     */
+    public static <T> Response<T> error(Errors error) {
         var result = new Response<T>();
         result.setSuccess(false);
+        result.setErrorMsg(error.getErrorMsg());
+        result.setErrorCode(error.getErrorCode());
         return result;
     }
 

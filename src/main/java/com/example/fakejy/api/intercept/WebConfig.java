@@ -1,4 +1,4 @@
-package com.example.fakejy.intercept;
+package com.example.fakejy.api.intercept;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;

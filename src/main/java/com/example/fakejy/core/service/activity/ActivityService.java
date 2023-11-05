@@ -30,4 +30,16 @@ public interface ActivityService {
      * @return
      */
     List<ActivityBO> rankActivities();
+
+    /**
+     * 收藏的活动
+     *
+     * @return
+     */
+    Page<ActivityBO> favoritesActivities(String openId, Integer page, Integer pageSize);
+
+    /**
+     * 根据id列表查询活动列表（顺序）
+     */
+    List<ActivityBO> getActivitiesListByIdListOrder(List<Long> idList);
 }
