@@ -8,9 +8,10 @@ import com.example.fakejy.core.service.activity.bo.ActivityBO;
 
 public class ActivityConverter {
 
-    public static ActivityDetailResponse convertDetail(ActivityBO activityBO) {
+    public static ActivityDetailResponse convertDetail(ActivityBO activityBO, Integer clickCount) {
         var result = BeanCopiers.copy(activityBO, ActivityDetailResponse.class);
         result.setStoreInfoObj(JSON.parseObject(activityBO.getStoreInfo()));
+        result.setClickCount(clickCount);
         return result;
     }
 

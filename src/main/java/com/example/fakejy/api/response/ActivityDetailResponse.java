@@ -118,11 +118,6 @@ public class ActivityDetailResponse implements Serializable {
     private Date gmtModified;
 
     /**
-     * 商户信息
-     */
-    private String storeInfo;
-
-    /**
      * 商户名称
      */
     private String storeName;
@@ -131,4 +126,9 @@ public class ActivityDetailResponse implements Serializable {
      * 商户信息
      */
     private JSONObject storeInfoObj;
+
+    /**
+     * 点击量
+     */
+    private Integer clickCount;
 }

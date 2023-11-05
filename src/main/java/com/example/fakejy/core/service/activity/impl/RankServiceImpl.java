@@ -1,5 +1,6 @@
 package com.example.fakejy.core.service.activity.impl;
 
+import com.example.fakejy.common.constants.TopConstants;
 import com.example.fakejy.core.service.activity.RankService;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,6 @@ public class RankServiceImpl implements RankService {
 
     private static final String RANK_ELE = "activity_rank_%d";
 
-    private static final Integer TOP_NUM = 10;
-
     @Override
     public Boolean activityClick(Long id) {
         try (var jedis = jedisPool.getResource()) {
@@ -34,12 +33,24 @@ public class RankServiceImpl implements RankService {
     public List<Long> getTopActivities() {
         Set<Tuple> result;
         try (var jedis = jedisPool.getResource()) {
-            result = jedis.zrevrangeWithScores(RANK_KEY, 0, TOP_NUM - 1);
+            result = jedis.zrevrangeWithScores(RANK_KEY, 0, TopConstants.TOP_NUM - 1);
         }
         var top = Lists.<Long>newArrayList();
         for (var tuple : result) {
             top.add(Long.valueOf(tuple.getElement().split("_")[2]));
         }
         return top;
+    }
+
+    @Override
+    public Integer getActivityClick(Long id) {
+        var result = 0;
+        try (var jedis = jedisPool.getResource()) {
+            var score = jedis.zscore(RANK_KEY, String.format(RANK_ELE, id));
+            if (score != null) {
+                result = score.intValue();
+            }
+        }
+        return result;
     }
 }

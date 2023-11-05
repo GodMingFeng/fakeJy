@@ -33,7 +33,8 @@ public class ActivityToCController {
         if (result != null) {
             rankService.activityClick(activityDetailRequest.getId());
         }
-        return Response.<ActivityDetailResponse>success().result(ActivityConverter.convertDetail(result));
+        var clickCount = rankService.getActivityClick(activityDetailRequest.getId());
+        return Response.<ActivityDetailResponse>success().result(ActivityConverter.convertDetail(result, clickCount));
     }
 
     @ResponseBody

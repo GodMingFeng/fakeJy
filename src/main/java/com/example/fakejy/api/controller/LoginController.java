@@ -1,6 +1,7 @@
 package com.example.fakejy.api.controller;
 
 
+import com.example.fakejy.api.annotations.IgnoreAuth;
 import com.example.fakejy.api.request.JsCode2sessionRequest;
 import com.example.fakejy.api.response.JsCode2sessionResponse;
 import com.example.fakejy.common.Response;
@@ -20,6 +21,7 @@ public class LoginController {
     private LoginService loginService;
 
     @ResponseBody
+    @IgnoreAuth
     @RequestMapping(path = {"/login"}, method = {RequestMethod.POST})
     public Response<JsCode2sessionResponse> login(@RequestBody JsCode2sessionRequest request) {
         if (request.getJsCode() == null) {

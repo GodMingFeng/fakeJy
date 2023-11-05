@@ -40,6 +40,8 @@ public interface ActivityService {
 
     /**
      * 根据id列表查询活动列表（顺序）
+     *
+     * @param containsExpire 是否包含过期
      */
-    List<ActivityBO> getActivitiesListByIdListOrder(List<Long> idList);
+    List<ActivityBO> getActivitiesListByIdListOrder(List<Long> idList, Boolean containsExpire);
 }

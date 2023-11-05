@@ -18,4 +18,14 @@ public class ActivityPageRequest implements Serializable {
      * 页面大小
      */
     private Integer pageSize;
+
+    /**
+     * 关键词搜索
+     */
+    private String keywords;
+
+    /**
+     * 类型
+     */
+    private Integer type;
 }

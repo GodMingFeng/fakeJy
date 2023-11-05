@@ -1,6 +1,7 @@
 package com.example.fakejy.core.service.activity.impl;
 
 import com.example.fakejy.common.Page;
+import com.example.fakejy.common.constants.TopConstants;
 import com.example.fakejy.common.enums.FavoritesType;
 import com.example.fakejy.common.utils.BeanCopiers;
 import com.example.fakejy.common.utils.PageUtils;
@@ -9,6 +10,7 @@ import com.example.fakejy.core.service.activity.RankService;
 import com.example.fakejy.core.service.activity.ao.QueryActivityAO;
 import com.example.fakejy.core.service.activity.bo.ActivityBO;
 import com.example.fakejy.core.service.favorites.FavoritesService;
+import com.example.fakejy.mapper.condition.ActivityCondition;
 import com.example.fakejy.mapper.domain.Activity;
 import com.example.fakejy.mapper.repository.ActivityMapper;
 import com.google.common.collect.Lists;
@@ -17,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -42,7 +45,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Page<ActivityBO> queryActivities(QueryActivityAO queryActivityAO) {
-        var result = PageUtils.page(activityMapper::selectAll,
+        var condition = BeanCopiers.copy(queryActivityAO, ActivityCondition.class);
+        var result = PageUtils.page(() -> activityMapper.selectByCondition(condition),
                 queryActivityAO.getPage(), queryActivityAO.getPageSize());
         return BeanCopiers.copyPage(result, ActivityBO.class);
     }
@@ -50,24 +54,28 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<ActivityBO> rankActivities() {
         var idList = rankService.getTopActivities();
-        return getActivitiesListByIdListOrder(idList);
+        var result = getActivitiesListByIdListOrder(idList, false);
+        return result.subList(0, result.size() > TopConstants.TOP_REAL_NUM ? TopConstants.TOP_REAL_NUM : result.size());
     }
 
     @Override
     public Page<ActivityBO> favoritesActivities(String openId, Integer page, Integer pageSize) {
         var idPage = favoritesService.getFavoritesItems(openId, FavoritesType.ACTIVITIES, page, pageSize);
-        var activitiesList = getActivitiesListByIdListOrder(idPage.getList());
+        var activitiesList = getActivitiesListByIdListOrder(idPage.getList(), true);
         return new Page<>(idPage.getTotal(), activitiesList);
     }
 
     @Override
-    public List<ActivityBO> getActivitiesListByIdListOrder(List<Long> idList) {
+    public List<ActivityBO> getActivitiesListByIdListOrder(List<Long> idList, Boolean containsExpire) {
         if (CollectionUtils.isEmpty(idList)) {
             return Lists.newArrayList();
         }
         var example = new Example(Activity.class);
         example.createCriteria()
                 .andIn("id", idList);
+        if (!containsExpire) {
+            example.and().andGreaterThan("endTime", new Date());
+        }
         var activityList = activityMapper.selectByExample(example);
         var map = activityList.stream().collect(Collectors.toMap(Activity::getId, Function.identity()));
         var result = idList.stream().map(map::get).filter(Objects::nonNull).collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.example.fakejy.api.aspect;
 
+import com.example.fakejy.api.annotations.IgnoreAuth;
 import com.example.fakejy.common.Response;
 import com.example.fakejy.common.constants.Errors;
 import com.example.fakejy.common.utils.HttpUtils;
@@ -9,12 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
-import java.util.Objects;
 
 @Slf4j
 @Aspect
@@ -24,14 +26,13 @@ public class AuthAspect {
     @Resource
     private JedisPool jedisPool;
 
-    private static final String WHITE_URI = "/fake_jy/login";
-
     @Around("execution(* com.example.fakejy.api.controller..*.*(..))")
     public Object aroundAnotherMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             var httpRequest = HttpUtils.getHttpRequest();
-            var uri = httpRequest.getRequestURI();
-            if (!Objects.equals(WHITE_URI, uri)) {
+            var method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+            var ignoreAuth = AnnotationUtils.findAnnotation(method, IgnoreAuth.class);
+            if (ignoreAuth == null) {
                 var loginToken = httpRequest.getHeader("login-token");
                 if (StringUtils.isEmpty(loginToken)) {
                     return Response.error(Errors.AUTH_ERROR);

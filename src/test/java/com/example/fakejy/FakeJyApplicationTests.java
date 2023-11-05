@@ -2,9 +2,11 @@ package com.example.fakejy;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.fakejy.common.enums.ActivityType;
 import com.example.fakejy.common.enums.FavoritesType;
 import com.example.fakejy.core.service.activity.RankService;
 import com.example.fakejy.core.service.favorites.FavoritesService;
+import com.example.fakejy.mapper.condition.ActivityCondition;
 import com.example.fakejy.mapper.repository.ActivityMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -30,8 +32,11 @@ public class FakeJyApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println(JSONObject.toJSONString(activityMapper.selectAll()));
-        System.out.println(333333);
+        var condition = new ActivityCondition();
+        condition.setKeywords("圣诞季");
+        condition.setType(ActivityType.NEWS.getType());
+        var a = activityMapper.selectByCondition(condition);
+        System.out.println(JSONObject.toJSONString(a));
     }
 
     @Test

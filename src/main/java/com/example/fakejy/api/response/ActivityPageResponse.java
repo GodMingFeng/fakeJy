@@ -118,11 +118,6 @@ public class ActivityPageResponse implements Serializable {
     private Date gmtModified;
 
     /**
-     * 商户信息
-     */
-    private String storeInfo;
-
-    /**
      * 商户名称
      */
     private String storeName;

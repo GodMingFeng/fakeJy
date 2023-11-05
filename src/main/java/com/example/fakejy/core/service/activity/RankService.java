@@ -18,4 +18,12 @@ public interface RankService {
      * @return
      */
     List<Long> getTopActivities();
+
+    /**
+     * 获取点击量
+     *
+     * @param id
+     * @return
+     */
+    Integer getActivityClick(Long id);
 }
