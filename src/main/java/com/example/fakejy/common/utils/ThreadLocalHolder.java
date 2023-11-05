@@ -7,11 +7,7 @@ import java.util.Map;
 
 public class ThreadLocalHolder {
 
-    private static final ThreadLocal<Map<String, Object>> THREAD_LOCAL = new TransmittableThreadLocal<>();
-
-    static {
-        THREAD_LOCAL.set(Maps.newConcurrentMap());
-    }
+    private static final ThreadLocal<Map<String, Object>> THREAD_LOCAL = TransmittableThreadLocal.withInitial(Maps::newConcurrentMap);
 
     public static void set(String key, Object value) {
         THREAD_LOCAL.get().put(key, value);
