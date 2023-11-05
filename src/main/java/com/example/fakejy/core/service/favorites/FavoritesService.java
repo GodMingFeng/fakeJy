@@ -23,4 +23,14 @@ public interface FavoritesService {
      * @return
      */
     Page<Long> getFavoritesItems(String openId, FavoritesType type, Integer page, Integer pageSize);
+
+    /**
+     * 是否收藏
+     *
+     * @param type
+     * @param openId
+     * @param itemId
+     * @return
+     */
+    Boolean isFavorites(FavoritesType type, String openId, String itemId);
 }

@@ -49,6 +49,17 @@ public class FavoritesServiceImpl implements FavoritesService {
                 favoritesMapper.selectByExample(example), page, pageSize), fav -> Long.valueOf(fav.getItemId()));
     }
 
+    @Override
+    public Boolean isFavorites(FavoritesType type, String openId, String itemId) {
+        var example = new Example(Favorites.class);
+        example.createCriteria()
+                .andEqualTo("openId", openId)
+                .andEqualTo("type", type.getType())
+                .andEqualTo("itemId", itemId)
+                .andEqualTo("status", FavoritesStatus.ENABLE.getStatus());
+        return favoritesMapper.selectOneByExample(example) != null;
+    }
+
 
     /**
      * 获取收藏

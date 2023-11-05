@@ -131,4 +131,9 @@ public class ActivityDetailResponse implements Serializable {
      * 点击量
      */
     private Integer clickCount;
+
+    /**
+     * 收藏状态
+     */
+    private Integer markStatus;
 }
